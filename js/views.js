@@ -82,17 +82,14 @@ var RegisterView = Backbone.View.extend({
     },
     createUser: function(){
         console.log("Create User");
-        users.create(this.newAttributes(),{
-           success: function(){
-               	console.log("Registered");
-               	alert("SuccessFully Registered");
-               	//window.location.reload();
-           },
-           error: function(data){
-           		console.log("Registration Failed");
-           		$("#signupError").text("Wrong Details Inputed").show();
-           }
-        });
+
+        var us = new User(this.newAttributes());
+        us.save({wait: true}).success(function(model, response){
+        		console.log("Registered");
+        	}).error(function(model, response, options){
+        		$("#signupError").text(model.responseText).show();
+        		console.log("Registration Problem");
+        	});
     },
     newAttributes: function(){
         return{
