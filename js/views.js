@@ -86,6 +86,9 @@ var RegisterView = Backbone.View.extend({
         var us = new User(this.newAttributes());
         us.save({wait: true}).success(function(model, response){
         		console.log("Registered");
+        		$("#loginModel").hide();
+        		alert("Registration Success Full - Login With your Credentials");
+        		window.location.reload();
         	}).error(function(model, response, options){
         		$("#signupError").text(model.responseText).show();
         		console.log("Registration Problem");
