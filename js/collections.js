@@ -1,11 +1,11 @@
 var Users = Backbone.Collection.extend({
     model: User,
-    url: "http://ashuthosh.pythonanywhere.com/api/user/",
+    url: "https://ashuthosh.pythonanywhere.com/api/user/",
 });
 
 var Games = Backbone.Collection.extend({
     model: Game,
-    url: "http://ashuthosh.pythonanywhere.com/api/game/",
+    url: "https://ashuthosh.pythonanywhere.com/api/game/",
 });
 
 var Topics = Backbone.Collection.extend({
@@ -14,7 +14,7 @@ var Topics = Backbone.Collection.extend({
         this.game_id = parentId;
     },
     url: function(){
-        return "http://ashuthosh.pythonanywhere.com/api/game/" + this.game_id + "/topics/";
+        return "https://ashuthosh.pythonanywhere.com/api/game/" + this.game_id + "/topics/";
     }
 });
 
@@ -26,7 +26,7 @@ var Posts = Backbone.Collection.extend({
         this.game_id = gamesId;
     },
     url: function(){
-        return "http://ashuthosh.pythonanywhere.com/api/game/" + this.game_id + "/topics/" + this.topic_id + "/posts/";
+        return "https://ashuthosh.pythonanywhere.com/api/game/" + this.game_id + "/topics/" + this.topic_id + "/posts/";
     }
 });
 
