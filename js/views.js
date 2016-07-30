@@ -85,10 +85,12 @@ var RegisterView = Backbone.View.extend({
         users.create(this.newAttributes(),{
            success: function(){
                	console.log("Registered");
-               	window.location.reload();
+               	alert("SuccessFully Registered");
+               	//window.location.reload();
            },
-           fail: function(){
+           error: function(data){
            		console.log("Registration Failed");
+           		$("#signupError").text("Wrong Details Inputed").show();
            }
         });
     },
