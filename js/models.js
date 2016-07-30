@@ -9,7 +9,7 @@ var User = Backbone.Model.extend({
             password: ""
         }
     },
-    urlRoot: "https://ashuthosh.pythonanywhere.com/api/logaccounts/" 
+    urlRoot: "https://ashuthosh.pythonanywhere.com/api/user/" 
 });
 
 var Game = Backbone.Model.extend({
