@@ -28,14 +28,18 @@ var LoginView = Backbone.View.extend({
                 username = data.username;
                 localStorage.setItem('username', username);
                 if(data.error){
-                    $('.alert-error').text(data.error.text).show();
+                    $("#loginError").text(data.error.text).show();
                 }
                 else{
                     $("#loginnavbar").hide();
+                    $("#loginError").hide();
                     $("#usernavbar").html("<a> Welcome " + username + ",</a>").show();
                     $("#logoutnavbar").html("<a data-toggle='modal' data-target='#logoutModal' href=\"\">Logout</a>").show();
                     window.location.reload();
                 }
+            },
+            error: function(){
+           		$("#loginError").text("Entered Wrong Credentials.").show();
             }
         });
     }
@@ -67,7 +71,7 @@ var RegisterView = Backbone.View.extend({
     el: $('#signupform'),
     initialize: function(){
         users.fetch({
-            succes: function(){
+            success: function(){
                 console.log("Users Fetched in Register View");
             }
         });
@@ -80,12 +84,15 @@ var RegisterView = Backbone.View.extend({
         console.log("Create User");
         users.create(this.newAttributes(),{
            success: function(){
-               console.log("Registered");
-               window.location.reload();
-           } 
+               	console.log("Registered");
+               	window.location.reload();
+           },
+           fail: function(){
+           		console.log("Registration Failed");
+           }
         });
     },
-    newAttributes(){
+    newAttributes: function(){
         return{
             username: this.$("#username").val(),
             first_name: this.$("#firstname").val(),
