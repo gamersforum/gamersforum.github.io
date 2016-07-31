@@ -10,10 +10,8 @@ var LoginView = Backbone.View.extend({
         return this;
     },
     loginFunction: function(event){
-        event.preventDefault();
-        console.log("LOGIN FUNCTION");
+   		$("#loginError").hide();
         var url = 'https://ashuthosh.pythonanywhere.com/api-auth/login/';
-        console.log("Loggin in...");
         var formValues = {
             username: $('#lusername').val(),
             password: $('#lpassword').val()
