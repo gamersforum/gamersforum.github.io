@@ -230,28 +230,8 @@
             <p align="center"><%= desc %></p>
         </td>
         <td class="col-lg-2" style="padding:20" align="center">
-            <div id="topicDeleteModal" class="modal fade" role="dialog">
-		        <div class="modal-dialog">
-		            <div class="modal-content">
-		                <div class="modal-header">
-		                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-		                    <h4 class="modal-title">Delete Topic</h4>
-		                </div>
-		                <div class="row modal-body">
-		                	<div id="topicDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
-		                	<label class="lab" align="center"><%=name%></label>
-		                    <p align="center"><%=desc%></p>
-		                </div>
-		                <div class="modal-footer">
-		                    <form id="deleteform" onsubmit="return false;">
-		                        <button type="submit" class="btn btn-default" id="DeleteTopic">Delete</button>
-		                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		                    </form>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-            <img style="width:30px;height:30px" data-toggle='modal' data-target='#topicDeleteModal' src="images/delete.png">
+            <div id="topicDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
+            <img class="deleteTopic" style="width:30px;height:30px" src="images/delete.png">
         </td>
         </div>
     </script>
@@ -263,28 +243,8 @@
             <p align="center"><%= post %></p>
         </td>
         <td class="col-lg-2" style="padding:40" align="center">
-            <div id="postDeleteModal" class="modal fade" role="dialog">
-		        <div class="modal-dialog">
-		            <div class="modal-content">
-		                <div class="modal-header">
-		                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-		                    <h4 class="modal-title">Delete Post</h4>
-		                </div>
-		                <div class="row modal-body">
-		                	<div id="postDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
-		                	<label class="lab" align="center"><%=title%></label>
-		                    <p align="center"><%=post%></p>
-		                </div>
-		                <div class="modal-footer">
-		                    <form id="deleteform" onsubmit="return false;">
-		                        <button type="submit" class="btn btn-default" id="DeletePost">Delete</button>
-		                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		                    </form>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-            <img style="width:30px;height:30px" data-toggle='modal' data-target='#postDeleteModal' src="images/delete.png">
+            <div id="postDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
+            <img class="deletePost" style="width:30px;height:30px" src="images/delete.png">
         </td>
         </div>
     </script>
