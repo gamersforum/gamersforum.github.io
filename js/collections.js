@@ -21,7 +21,6 @@ var Topics = Backbone.Collection.extend({
 var Posts = Backbone.Collection.extend({
     model: Post,
     setParent: function(topicsId, gamesId){
-        console.log("T:" + topicsId +"G:" + gamesId);
         this.topic_id = topicsId;
         this.game_id = gamesId;
     },

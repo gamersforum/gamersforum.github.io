@@ -1,7 +1,7 @@
 var LoginView = Backbone.View.extend({
     el: $("#loginform"),
     initialize: function(){
-        console.log('Initializing Login View');
+       	this.render()
     },
     events: {
         'click #login': 'loginFunction',
@@ -46,7 +46,7 @@ var LoginView = Backbone.View.extend({
 var LogoutView = Backbone.View.extend({
     el: $("#logoutform"),
     initialize: function(){
-        console.log('Initializing Logout View');
+        this.render();
     },
     events: {
         'click #logout': 'logoutFunction',
@@ -55,7 +55,6 @@ var LogoutView = Backbone.View.extend({
         return this;
     },
     logoutFunction: function(event){
-        console.log("LOGOUT FUNCTION");
         username = "";
         localStorage.setItem('username', username);
         $("#logoutnavbar").hide();
@@ -68,28 +67,19 @@ var LogoutView = Backbone.View.extend({
 var RegisterView = Backbone.View.extend({
     el: $('#signupform'),
     initialize: function(){
-        users.fetch({
-            success: function(){
-                console.log("Users Fetched in Register View");
-            }
-        });
-        console.log("Initialized Register");
+        
     },
     events: {
         'click #signup': 'createUser',
     },
     createUser: function(){
-        console.log("Create User");
-
         var us = new User(this.newAttributes());
         us.save({wait: true}).success(function(model, response){
-        		console.log("Registered");
         		$("#loginModel").hide();
-        		alert("Registration Success Full - Login With your Credentials");
+        		$("#signupError").text("Registration Success Full - Login With your Credentials").show();
         		window.location.reload();
         	}).error(function(model, response, options){
         		$("#signupError").text(model.responseText).show();
-        		console.log("Registration Problem");
         	});
     },
     newAttributes: function(){
@@ -125,13 +115,11 @@ var GamesView = Backbone.View.extend({
     el: $('#gameitems'),
     initialize: function(){
         self = this;
-        console.log("Games View Initialize");
         games.fetch({
             success: function(response, xhr, options){
                 self.render();   
             }
         });
-        console.log(games);
     },
     render: function(){
         this.$el.html("");
@@ -159,7 +147,6 @@ var TopicView = Backbone.View.extend({
         router.navigate(Backbone.history.getFragment() + '/posts/' + this.model.get('id'), {trigger: true});
     },
     topicDelete: function(){
-        console.log("removing item");
         username = localStorage.getItem("username");
         var self = this;
         users.fetch({
@@ -187,7 +174,6 @@ var TopicView = Backbone.View.extend({
 var TopicsView = Backbone.View.extend({
     el: $('#topicitems'),
     initialize: function(option){
-        console.log("Topics View Intitialize");
         username = localStorage.getItem("username");
         this.gamesid = option.id;
         topics.setParent(this.gamesid);
@@ -196,7 +182,6 @@ var TopicsView = Backbone.View.extend({
             success: function(response, xhr, options){
                 games.fetch({
                     success: function(respones, xhr, options){
-                        console.log("GAMES FETCHED");
                         self.render();
                     }
                 });     
@@ -245,7 +230,6 @@ var PostView = Backbone.View.extend({
         'click #DeletePost': 'postDelete',
     },
     postDelete: function(){
-        console.log("removing item");
         username = localStorage.getItem("username");
         var self = this;
         users.fetch({
@@ -273,11 +257,9 @@ var PostView = Backbone.View.extend({
 var PostsView = Backbone.View.extend({
     el: $('#postitems'),
     initialize: function(option){
-        console.log("Posts View Intitialize");
         username = localStorage.getItem("username");
         this.topicsid = option.tid;
         this.gamesid = option.gid;
-        console.log("GID:-" + this.gamesid + "-TID:-" + this.topicsid);
         posts.setParent(this.topicsid, this.gamesid);
         topics.setParent(this.gamesid);
         var self = this;
@@ -287,7 +269,6 @@ var PostsView = Backbone.View.extend({
                     success: function(respones, xhr, options){
                         games.fetch({
                             success: function(responses, xhr, options){
-                                console.log("EVERYTHING FETCHED");
                                 self.render();    
                             }
                         });
@@ -341,11 +322,9 @@ var TopicCreateView = Backbone.View.extend({
         this.game_id = option.id;
         users.fetch({
             succes: function(req, xhr, c){
-                console.log("User read Success");
                 self.render();
             }
         });
-        console.log('Topic Create View');
     },
     events: {
         'click #createTopic': 'createTopicFunction',
@@ -388,7 +367,6 @@ var PostCreateView = Backbone.View.extend({
                 });
             }
         });
-        console.log('Post Create View');
     },
     events: {
         'click #createPost': 'createPostFunction',
@@ -397,7 +375,6 @@ var PostCreateView = Backbone.View.extend({
         return this;
     },
     createPostFunction: function(event){
-        console.log("Create Post Function");
         posts.create(this.newAttributes(),{ 
             success: function(){
                 window.location.reload();
