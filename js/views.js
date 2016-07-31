@@ -229,6 +229,15 @@ var TopicsView = Backbone.View.extend({
             this.$el.append("<tr><td colspan='3' style='padding:20' align=\"center\">" +
                             "<button class=\"btn btn-info btn-block\" data-toggle='modal' data-target='#topicModal'>Create New Topic</button>" +
                             "</td></tr>");
+        this.$el.append("<tr><td colspan='3' style='padding:20' align=\"center\">" +
+                            "<button id='topicBack' class=\"btn btn-info btn-block\">Back</button>" +
+                            "</td></tr>");
+    },
+    events: {
+    	'click #topicBack': 'goBack'
+    },
+    goBack: function(){
+    	window.history.back();
     }
 });
 
@@ -325,6 +334,15 @@ var PostsView = Backbone.View.extend({
             this.$el.append("<tr><td colspan='3' style='padding:20' align=\"center\">" +
                             "<button class=\"btn btn-info btn-block\" data-toggle='modal' data-target='#postModal'>Create New Post</button>" +
                             "</td></tr>");
+        this.$el.append("<tr><td colspan='3' style='padding:20' align=\"center\">" +
+                            "<button id='postBack' class=\"btn btn-info btn-block\">Back</button>" +
+                            "</td></tr>");
+    },
+    events: {
+    	'click #postBack': 'goBack'
+    },
+    goBack: function(){
+    	window.history.back();
     }
 });
 
