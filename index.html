@@ -5,7 +5,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/3-col-portfolio.css" rel="stylesheet">
     <link href="css/lightbox.css" rel="stylesheet">
-    <script src="js/lib/jquery.js"></script>
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
 </head>
@@ -224,29 +223,37 @@
     </script>
     
     <script type="text/template" id="topicitems-template">
-        <div class="row">
-        <td class="col-lg-10'>
-            <label class="lab" align="center"><a class="openPosts"><%= name %></a></label><br>
-            <p align="center"><%= desc %></p>
+        <td class="col-lg-8" align="center">
+            <label id="editTopicName"><a class="openPosts"><%= name %></a></label>
+            <input id="editTopicNameInput" type="text" value="<%= name%>" style="display:none;"><br>
+            <p id="topicDesc" align="center"><%= desc %></p>
+            <input id="editTopicDescInput" type="text" value="<%= desc%>" style="display:none;">
+        </td>
+        <td class="col-lg-2" style="padding:20" align="center">
+            <div id="topicEditError" class="alert alert-error" style="display:none;">Only User Who Created Can Edit this</div>
+            <img class="editTopic" style="width:30px;height:30px" src="images/edit.png">
         </td>
         <td class="col-lg-2" style="padding:20" align="center">
             <div id="topicDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
-            <img class="deleteTopic" style="width:30px;height:30px" src="images/delete.png">
+            <img id="deleteTopic" style="width:30px;height:30px" src="images/delete.png">
         </td>
-        </div>
     </script>
     
     <script type="text/template" id="postitems-template">
-        <div class="row">
-        <td class="col-lg-10">
-            <h2 align="center"><%= title %>:</h2>
-            <p align="center"><%= post %></p>
+        <td class="col-lg-8" align="center">
+            <h2 id="title" align="center"><%= title %>:</h2>
+            <input id="editPostTitleInput" type="text" value="<%= title%>" style="display:none;">
+            <p id="editPost" align="center"><%= post %></p>
+            <input id="editPostInput" type="text" value="<%= post%>" style="display:none;">
+        </td>
+        <td class="col-lg-2" style="padding:40" align="center">
+            <div id="postEditError" class="alert alert-error" style="display:none;">Only User Who Created Can Edit this</div>
+            <img class="editPostTitle" style="width:30px;height:30px" src="images/edit.png">
         </td>
         <td class="col-lg-2" style="padding:40" align="center">
             <div id="postDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
             <img class="deletePost" style="width:30px;height:30px" src="images/delete.png">
         </td>
-        </div>
     </script>
     
     <script src="js/lib/jquery.js" type="text/javascript"></script>

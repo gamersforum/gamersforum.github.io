@@ -66,9 +66,6 @@ var LogoutView = Backbone.View.extend({
 
 var RegisterView = Backbone.View.extend({
     el: $('#signupform'),
-    initialize: function(){
-        
-    },
     events: {
         'click #signup': 'createUser',
     },
@@ -140,11 +137,90 @@ var TopicView = Backbone.View.extend({
         this.render();
     },
     events:{
-        'click .deleteTopic': 'topicDelete',
+        'click #deleteTopic': 'topicDelete',
         'click .openPosts': 'openPosts',
+        'click .editTopic': 'topicEdit',
+        'keypress #editTopicNameInput': 'updateTopicOnEnter',
+        'blur #editTopicNameInput': 'saveTopicName',
+        'dblclick #topicDesc': 'descEdit',
+        'keypress #editTopicDescInput': 'updateDescOnEnter',
+        'blur #editTopicDescInput': 'saveDesc'
+    },
+    descEdit: function(){
+        self = this;
+        username = localStorage.getItem("username");
+        users.fetch({
+            success: function(request, xhr, others){
+                var g = users.where({username:username,id:self.model.toJSON()['owner']});
+                if(g.length == 0){
+                    return;
+                }
+                else{
+                    this.$("#topicDesc").hide();
+                    this.$("#editTopicDescInput").show();
+                    this.$("#editTopicDescInput").focus();
+        
+                }    
+            }
+        });
+    },
+    updateDescOnEnter: function(e){
+        if(e.which == 13){
+            this.$("#editTopicDescInput").hide();
+            this.$("#topicDesc").show();
+            this.saveDesc();
+        }
+    },
+    saveDesc: function(){
+        var value = this.$("#editTopicDescInput").val().trim();
+        if(value){
+            this.model.set({desc: value});
+            this.model.save();
+        }
+        this.render();
+    },
+    topicEdit: function(){
+        self = this;
+        username = localStorage.getItem("username");
+        users.fetch({
+            success: function(request, xhr, others){
+                var g = users.where({username:username,id:self.model.toJSON()['owner']});
+                if(g.length == 0){
+                    self.count = self.count + 1;
+                    if(self.count % 2 == 1)
+                        $("#topicEditError").show();
+                    else
+                        $("#topicEditError").hide();
+                }
+                else{
+                    this.$("#editTopicName").hide();
+                    this.$("#editTopicNameInput").show();
+                    this.$("#editTopicNameInput").focus();
+                }    
+            }
+        });
+    },
+    updateTopicOnEnter: function(e){
+        if(e.which == 13){
+            console.log("Pressed Enter");
+            this.$("#editTopicNameInput").hide();
+            this.$("#editTopicName").show();
+            this.saveTopicName();
+        }
+    },
+    saveTopicName: function(){
+        var value = this.$("#editTopicNameInput").val().trim();
+        if(value){
+            this.model.set({name: value});
+            this.model.save();
+        }
+        this.render();
     },
     openPosts: function(){
         router.navigate(Backbone.history.getFragment() + '/posts/' + this.model.get('id'), {trigger: true, replace:false});
+    },
+    validUser: function(){
+        
     },
     topicDelete: function(){
         username = localStorage.getItem("username");
@@ -154,7 +230,6 @@ var TopicView = Backbone.View.extend({
                 var g = users.where({username:username,id:self.model.toJSON()['owner']});
                 if(g.length == 0){
                    	self.count = self.count + 1;
-                    console.log("Count" + self.count);
                     if(self.count % 2 == 1)
                         $("#topicDeleteError").show();
                     else
@@ -195,7 +270,7 @@ var TopicsView = Backbone.View.extend({
     },
     render: function(g){
         var g = games.where({id:parseInt(this.gamesid)})[0];
-        this.$el.html("<td colspan='3' style=\"padding:20\" align='center'>"
+        this.$el.html("<tr><td colspan='3' style=\"padding:20\" align='center'>"
                       + "<div class='row'> <div class='col-lg-5' align='center'> " 
                       + "<a href='" + g.get('poster') + "' data-lightbox='image2' data-title='" 
                       + g.get('name')
@@ -203,7 +278,7 @@ var TopicsView = Backbone.View.extend({
                       + "<div class='col-lg-7'> <h2>" + g.get('name') + "</h2>" 
                       + "<h4>" + g.get('category') + "</h4>" 
                       + "<label> Game Information: </label><p>" + g.get('info') + "</p>"
-                      + "</div></div> <hr> <font color='grey'> <h2> ------------TOPICS------------ </h2> </font> </td>");
+                      + "</div></div> <hr> <font color='grey'> <h2> ------------TOPICS------------ </h2> </font> </td></tr>");
         topics.each(function(model){
             var list = new TopicView({
                 model: model
@@ -235,6 +310,81 @@ var PostView = Backbone.View.extend({
     },
     events:{
         'click .deletePost': 'postDelete',
+        'click .editPostTitle': 'titleEdit',
+        'keypress #editPostTitleInput': 'updateTitleOnEnter',
+        'blur #editPostTitleInput': 'savePostTitle',
+        'dblclick #editPost': 'postEdit',
+        'keypress #editPostInput': 'updatePostOnEnter',
+        'blur #editPostInput': 'savePost'
+    },
+    postEdit: function(){
+        username = localStorage.getItem("username");
+        var self = this;
+        users.fetch({
+            success: function(request, xhr, others){
+                var g = users.where({username:username,id:self.model.toJSON()['owner']});
+                if(g.length == 0){
+                    return;    
+                }
+                else{
+                    this.$("#editPost").hide();
+                    this.$("#editPostInput").show();
+                    this.$("#editPostInput").focus();
+                }    
+            }
+        });
+    },
+    updatePostOnEnter: function(e){
+        if(e.which == 13){
+            this.$("#editPostInput").hide();
+            this.$("#editPost").show();
+            this.savePost();
+        }
+    },
+    savePost: function(){
+        var value = this.$("#editPostInput").val().trim();
+        if(value){
+            this.model.set({post: value});
+            this.model.save();
+        }
+        this.render();
+    },
+    titleEdit: function(){
+        username = localStorage.getItem("username");
+        var self = this;
+        users.fetch({
+            success: function(request, xhr, others){
+                var g = users.where({username:username,id:self.model.toJSON()['owner']});
+                if(g.length == 0){
+                    self.count = self.count + 1;
+                    if(self.count % 2 == 1)
+                        $("#postEditError").show();
+                    else
+                        $("#postEditError").hide();
+                }
+                else{
+                    this.$("#title").hide();
+                    this.$("#editPostTitleInput").show();
+                    this.$("#editPostTitleInput").focus();
+                }    
+            }
+        });
+    },
+    updateTitleOnEnter: function(e){
+        if(e.which == 13){
+            console.log("Pressed Enter");
+            this.$("#editPostTitleInput").hide();
+            this.$("#title").show();
+            this.savePostTitle();
+        }
+    },
+    savePostTitle: function(){
+        var value = this.$("#editPostTitleInput").val().trim();
+        if(value){
+            this.model.set({title: value});
+            this.model.save();
+        }
+        this.render();
     },
     postDelete: function(){
         username = localStorage.getItem("username");
@@ -291,7 +441,7 @@ var PostsView = Backbone.View.extend({
     render: function(){
         var t = topics.where({id:parseInt(this.topicsid)})[0];
         var g = games.where({id:t.get('game_id')})[0];
-        this.$el.html("<td colspan='3' style=\"padding:20\" align='center'>"
+        this.$el.html("<tr><td colspan='3' style=\"padding:20\" align='center'>"
                       + "<div class='row'> <div class='col-lg-5'> " 
                       + "<a href='" + g.get('poster') + "' data-lightbox='image' data-title='" 
                       + g.get('name')
@@ -299,7 +449,7 @@ var PostsView = Backbone.View.extend({
                       + "<div class='col-lg-7'> <h2>" + g.get('name') + "</h2>"
                       + "<h4>" + g.get('category') + "</h4>" 
                       + "<label> Game Information: </label><p>" + g.get('info') + "</p>"
-                      + "</div></div></td>");
+                      + "</div></div></td></tr>");
         this.$el.append("<tr>" 
                         + "<td colspan='3' style='padding:20' align='center'>"
                         + "<h1> Topic: <font color='grey' size='6'> " + t.get('name') + " </font> </h1>"
