@@ -107,7 +107,7 @@ var GameView = Backbone.View.extend({
         'click .open': 'gotClicked',
     },
     gotClicked: function(){
-        router.navigate('topics/' + this.model.get('id'), {trigger: true});
+        router.navigate('topics/' + this.model.get('id'), {trigger: true, replace:false});
     }
 });
 
@@ -117,7 +117,7 @@ var GamesView = Backbone.View.extend({
         self = this;
         games.fetch({
             success: function(response, xhr, options){
-                self.render();   
+                self.render();
             }
         });
     },
@@ -144,7 +144,7 @@ var TopicView = Backbone.View.extend({
         'click .openPosts': 'openPosts',
     },
     openPosts: function(){
-        router.navigate(Backbone.history.getFragment() + '/posts/' + this.model.get('id'), {trigger: true});
+        router.navigate(Backbone.history.getFragment() + '/posts/' + this.model.get('id'), {trigger: true, replace:false});
     },
     topicDelete: function(){
         username = localStorage.getItem("username");

@@ -30,7 +30,6 @@ var Posts = Backbone.Collection.extend({
 });
 
 var users = new Users;
-users.fetch();
 var games = new Games;
 var topics = new Topics;
 var posts = new Posts;
