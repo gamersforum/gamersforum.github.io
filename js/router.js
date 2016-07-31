@@ -29,23 +29,37 @@ var MyRouter = Backbone.Router.extend({
     },
     MainRoute: function(){
         $("#game-division").show();
-        new GamesView();
+        this._swapView(new GamesView());
         $("#topic-division").hide();
         $("#post-division").hide();
     },
     getTopics: function(topicsid){
         $("#game-division").hide();
         $("#post-division").hide();
-        new TopicsView({id:topicsid});
+        this._swapView(new TopicsView({id:topicsid}));
         new TopicCreateView({id:topicsid});
         $("#topic-division").show();
     },
     getPosts: function(gid, tid){
         $("#game-division").hide();
         $("#topic-division").hide();
-        new PostsView({gid:gid,tid:tid});
+        this._swapView(new PostsView({gid:gid,tid:tid}));
         new PostCreateView({tid:tid,gid:gid});
         $("#post-division").show();    
+    },
+    _swapView: function (view) {
+        if (this.currentView) { 
+            this.currentView.$el.fadeOut(500, function() {
+                //this.currentView.hide();
+                this.currentView = view;
+                $('#main').html(view.$el.hide().fadeIn(500));
+                //$('#main').html(view.render().$el);
+            })
+        } 
+        else {
+            this.currentView = view;
+            $('#main').html(view.$el);
+        }
     }
 });
 
