@@ -192,12 +192,12 @@ var TopicsView = Backbone.View.extend({
         var g = games.where({id:parseInt(this.gamesid)})[0];
         this.$el.html("<td colspan='3' style=\"padding:20\" align='center'>"
                       + "<div class='row'> <div class='col-lg-5' align='center'> " 
-                      + "<a href='" + g.get('poster') + "' data-lightbox='image' data-title='" 
+                      + "<a href='" + g.get('poster') + "' data-lightbox='image2' data-title='" 
                       + g.get('name')
                       + "'> <img src='" + g.get('poster') + "' style='display:block;width:340;height:182'> </a> </div>"
                       + "<div class='col-lg-7'> <h2>" + g.get('name') + "</h2>" 
-                      + "<br> <h4>" + g.get('category') + "</h4>" 
-                      + "<br> <label> Game Information: </label><p>" + g.get('info') + "</p>"
+                      + "<h4>" + g.get('category') + "</h4>" 
+                      + "<label> Game Information: </label><p>" + g.get('info') + "</p>"
                       + "</div></div> <hr> <font color='grey'> <h2> ------------TOPICS------------ </h2> </font> </td>");
         topics.each(function(model){
             var list = new TopicView({
@@ -284,10 +284,12 @@ var PostsView = Backbone.View.extend({
         var g = games.where({id:t.get('game_id')})[0];
         this.$el.html("<td colspan='3' style=\"padding:20\" align='center'>"
                       + "<div class='row'> <div class='col-lg-5'> " 
-                      + "<img src='" + g.get('poster') + "' style='display:block;width:100%;height:30%' > </div>"
-                      + "<div class='col-lg-7'> <h1>" + g.get('name') + "</h1>" 
-                      + "<br> <h4>" + g.get('category') + "</h4>" 
-                      + "<br> <label> Game Information: </label><p>" + g.get('info') + "</p>"
+                      + "<a href='" + g.get('poster') + "' data-lightbox='image' data-title='" 
+                      + g.get('name')
+                      + "'> <img src='" + g.get('poster') + "' style='display:block;width:340;height:182'> </a> </div>"
+                      + "<div class='col-lg-7'> <h2>" + g.get('name') + "</h2>"
+                      + "<h4>" + g.get('category') + "</h4>" 
+                      + "<label> Game Information: </label><p>" + g.get('info') + "</p>"
                       + "</div></div></td>");
         this.$el.append("<tr>" 
                         + "<td colspan='3' style='padding:20' align='center'>"
