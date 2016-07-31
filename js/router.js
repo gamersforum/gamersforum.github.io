@@ -12,10 +12,11 @@ var MyRouter = Backbone.Router.extend({
                     $("#logoutnavbar").hide();
                     username = "";
                     localStorage.setItem('username', username);
+                    $("#loginnavbar").show();
                 }
                 else{
                     $("#loginnavbar").hide();
-                    $("#usernavbar").html("<a> Welcome " + username + ",</a>");
+                    $("#usernavbar").html("<a> Welcome " + username + ",</a>").show();
                     $("#logoutnavbar").html("<a data-toggle='modal' data-target='#logoutModal' href=\"\">Logout</a>").show();
                 }    
             }

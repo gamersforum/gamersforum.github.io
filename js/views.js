@@ -152,7 +152,7 @@ var TopicView = Backbone.View.extend({
         this.render();
     },
     events:{
-        'click .deleteTopic': 'topicDelete',
+        'click #DeleteTopic': 'topicDelete',
         'click .openPosts': 'openPosts',
     },
     openPosts: function(){
@@ -166,12 +166,7 @@ var TopicView = Backbone.View.extend({
             success: function(request, xhr, others){
                 var g = users.where({username:username,id:self.model.toJSON()['owner']});
                 if(g.length == 0){
-                    self.count = self.count + 1;
-                    console.log("Count" + self.count);
-                    if(self.count % 2 == 1)
-                        $("#topicDeleteError").show();
-                    else
-                        $("#topicDeleteError").hide();
+                   	$("#topicDeleteError").show();
                 }
                 else{
                     self.model.destroy({
@@ -247,7 +242,7 @@ var PostView = Backbone.View.extend({
         this.render();
     },
     events:{
-        'click .deletePost': 'postDelete',
+        'click #DeletePost': 'postDelete',
     },
     postDelete: function(){
         console.log("removing item");
@@ -257,12 +252,7 @@ var PostView = Backbone.View.extend({
             success: function(request, xhr, others){
                 var g = users.where({username:username,id:self.model.toJSON()['owner']});
                 if(g.length == 0){
-                    self.count = self.count + 1;
-                    console.log("Count" + self.count);
-                    if(self.count % 2 == 1)
-                        $("#postDeleteError").show();
-                    else
-                        $("#postDeleteError").hide();
+                    $("#postDeleteError").show();
                 }
                 else{
                     self.model.destroy({
