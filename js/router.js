@@ -30,7 +30,7 @@ var MyRouter = Backbone.Router.extend({
     MainRoute: function(){
         $("#topic-division").hide();
         $("#post-division").hide();
-        new GamesView();
+        var view = new GamesView();
         $("#game-division").show();
     },
     getTopics: function(topicsid){
