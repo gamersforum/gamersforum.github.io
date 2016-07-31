@@ -10,6 +10,8 @@ var MyRouter = Backbone.Router.extend({
                 if(g.length == 0){
                     $("#usernavbar").hide();
                     $("#logoutnavbar").hide();
+                    username = "";
+                    localStorage.setItem('username', username);
                 }
                 else{
                     $("#loginnavbar").hide();
