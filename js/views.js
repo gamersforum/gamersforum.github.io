@@ -132,122 +132,64 @@ var GamesView = Backbone.View.extend({
 var TopicView = Backbone.View.extend({
     tagName: 'tr',
     template: _.template($('#topicitems-template').html()),
-    initialize: function(){
-        this.count = 0;
-        this.render();
+    render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
     },
     events:{
-        'click #deleteTopic': 'topicDelete',
         'click .openPosts': 'openPosts',
-        'click .editTopic': 'topicEdit',
-        'keypress #editTopicNameInput': 'updateTopicOnEnter',
-        'blur #editTopicNameInput': 'saveTopicName',
-        'dblclick #topicDesc': 'descEdit',
-        'keypress #editTopicDescInput': 'updateDescOnEnter',
-        'blur #editTopicDescInput': 'saveDesc'
-    },
-    descEdit: function(){
-        self = this;
-        username = localStorage.getItem("username");
-        users.fetch({
-            success: function(request, xhr, others){
-                var g = users.where({username:username,id:self.model.toJSON()['owner']});
-                if(g.length == 0){
-                    return;
-                }
-                else{
-                    this.$("#topicDesc").hide();
-                    this.$("#editTopicDescInput").show();
-                    this.$("#editTopicDescInput").focus();
-        
-                }    
-            }
-        });
-    },
-    updateDescOnEnter: function(e){
-        if(e.which == 13){
-            this.$("#editTopicDescInput").hide();
-            this.$("#topicDesc").show();
-            this.saveDesc();
-        }
-    },
-    saveDesc: function(){
-        var value = this.$("#editTopicDescInput").val().trim();
-        if(value){
-            this.model.set({desc: value});
-            this.model.save();
-        }
-        this.render();
-    },
-    topicEdit: function(){
-        self = this;
-        username = localStorage.getItem("username");
-        users.fetch({
-            success: function(request, xhr, others){
-                var g = users.where({username:username,id:self.model.toJSON()['owner']});
-                if(g.length == 0){
-                    self.count = self.count + 1;
-                    if(self.count % 2 == 1)
-                        $("#topicEditError").show();
-                    else
-                        $("#topicEditError").hide();
-                }
-                else{
-                    this.$("#editTopicName").hide();
-                    this.$("#editTopicNameInput").show();
-                    this.$("#editTopicNameInput").focus();
-                }    
-            }
-        });
-    },
-    updateTopicOnEnter: function(e){
-        if(e.which == 13){
-            console.log("Pressed Enter");
-            this.$("#editTopicNameInput").hide();
-            this.$("#editTopicName").show();
-            this.saveTopicName();
-        }
-    },
-    saveTopicName: function(){
-        var value = this.$("#editTopicNameInput").val().trim();
-        if(value){
-            this.model.set({name: value});
-            this.model.save();
-        }
-        this.render();
+        'click .deleteButton': 'deleteTopic',
+        'click .editButton': 'editTopic'
     },
     openPosts: function(){
         router.navigate(Backbone.history.getFragment() + '/posts/' + this.model.get('id'), {trigger: true, replace:false});
     },
     validUser: function(){
-        
-    },
-    topicDelete: function(){
         username = localStorage.getItem("username");
-        var self = this;
-        users.fetch({
-            success: function(request, xhr, others){
-                var g = users.where({username:username,id:self.model.toJSON()['owner']});
-                if(g.length == 0){
-                   	self.count = self.count + 1;
-                    if(self.count % 2 == 1)
-                        $("#topicDeleteError").show();
-                    else
-                        $("#topicDeleteError").hide();
-                }
-                else{
-                    self.model.destroy({
-                        success: function(){
-                            window.location.reload();     
-                        }
-                    });
-                }    
-            }
-        });
+        var g = users.where({username:username,id:this.model.toJSON()['owner']});
+        if(g.length == 0){
+            return false;
+        }
+        else{
+            return true;
+        }
     },
-    render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
-        return this;
+    editTopic: function(){
+        console.log(this.model.toJSON());
+        if(this.validUser()){
+            var topicName = this.$("#editTopicNameInput").val().trim();
+            var topicDesc = this.$("#editTopicDescInput").val().trim();
+            var gameId = this.model.get('game_id');
+            this.model.set({name: topicName});
+            this.model.set({desc: topicDesc});
+            this.model.save(this.model, {
+                success: function(){
+                    console.log("Changed Something");
+                    $("[dismiss=editTopic]").trigger({ type: "click" });
+                    new TopicsView({id:gameId});
+                }
+            });
+        }
+        else{
+            var s = "#topicEditError" + this.model.id;
+            $(s).show();
+        }
+    },
+    deleteTopic: function(){
+        console.log(this.model.toJSON());
+        if(this.validUser()){
+            var gameId = this.model.get('game_id');
+            this.model.destroy({
+                success: function(){
+                    $("[dismiss=deleteTopic]").trigger({ type: "click" });
+                    new TopicsView({id:gameId});
+                }
+            });
+        }
+        else{
+            var s = "#topicDeleteError" + this.model.id;
+            $(s).show();
+        }
     }
 });
 
@@ -304,114 +246,62 @@ var TopicsView = Backbone.View.extend({
 var PostView = Backbone.View.extend({
     tagName: 'tr',
     template: _.template($('#postitems-template').html()),
-    initialize: function(){
-        this.count = 0;
-        this.render();
-    },
-    events:{
-        'click .deletePost': 'postDelete',
-        'click .editPostTitle': 'titleEdit',
-        'keypress #editPostTitleInput': 'updateTitleOnEnter',
-        'blur #editPostTitleInput': 'savePostTitle',
-        'dblclick #editPost': 'postEdit',
-        'keypress #editPostInput': 'updatePostOnEnter',
-        'blur #editPostInput': 'savePost'
-    },
-    postEdit: function(){
-        username = localStorage.getItem("username");
-        var self = this;
-        users.fetch({
-            success: function(request, xhr, others){
-                var g = users.where({username:username,id:self.model.toJSON()['owner']});
-                if(g.length == 0){
-                    return;    
-                }
-                else{
-                    this.$("#editPost").hide();
-                    this.$("#editPostInput").show();
-                    this.$("#editPostInput").focus();
-                }    
-            }
-        });
-    },
-    updatePostOnEnter: function(e){
-        if(e.which == 13){
-            this.$("#editPostInput").hide();
-            this.$("#editPost").show();
-            this.savePost();
-        }
-    },
-    savePost: function(){
-        var value = this.$("#editPostInput").val().trim();
-        if(value){
-            this.model.set({post: value});
-            this.model.save();
-        }
-        this.render();
-    },
-    titleEdit: function(){
-        username = localStorage.getItem("username");
-        var self = this;
-        users.fetch({
-            success: function(request, xhr, others){
-                var g = users.where({username:username,id:self.model.toJSON()['owner']});
-                if(g.length == 0){
-                    self.count = self.count + 1;
-                    if(self.count % 2 == 1)
-                        $("#postEditError").show();
-                    else
-                        $("#postEditError").hide();
-                }
-                else{
-                    this.$("#title").hide();
-                    this.$("#editPostTitleInput").show();
-                    this.$("#editPostTitleInput").focus();
-                }    
-            }
-        });
-    },
-    updateTitleOnEnter: function(e){
-        if(e.which == 13){
-            console.log("Pressed Enter");
-            this.$("#editPostTitleInput").hide();
-            this.$("#title").show();
-            this.savePostTitle();
-        }
-    },
-    savePostTitle: function(){
-        var value = this.$("#editPostTitleInput").val().trim();
-        if(value){
-            this.model.set({title: value});
-            this.model.save();
-        }
-        this.render();
-    },
-    postDelete: function(){
-        username = localStorage.getItem("username");
-        var self = this;
-        users.fetch({
-            success: function(request, xhr, others){
-                var g = users.where({username:username,id:self.model.toJSON()['owner']});
-                if(g.length == 0){
-                    self.count = self.count + 1;
-                    if(self.count % 2 == 1)
-                        $("#postDeleteError").show();
-                    else
-                        $("#postDeleteError").hide();
-                }
-                else{
-                    self.model.destroy({
-                        success: function(){
-                            window.location.reload();     
-                        }
-                    });
-                }    
-            }
-        });
-    },
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         return this;
+    },
+    events:{
+        'click .deleteButton': 'deletePost',
+        'click .editButton': 'editPost'
+    },
+    validUser: function(){
+        username = localStorage.getItem("username");
+        var g = users.where({username:username,id:this.model.toJSON()['owner']});
+        if(g.length == 0){
+            return false;
+        }
+        else{
+            return true;
+        }
+    },
+    editPost: function(){
+        console.log(this.model.toJSON());
+        if(this.validUser()){
+            var postTitle = this.$("#editPostTitleInput").val().trim();
+            var postPost = this.$("#editPostPostInput").val().trim();
+            var gameId = this.model.get('game_id');
+            var topicId = this.model.get('topic_id');
+            this.model.set({title: postTitle});
+            this.model.set({post: postPost});
+            this.model.save(this.model, {
+                success: function(){
+                    console.log("Changed Something");
+                    $("[dismiss=editPost]").trigger({ type: "click" });
+                    new PostsView({gid:gameId,tid:topicId});
+                }
+            });
+        }
+        else{
+            var s = "#postEditError" + this.model.id;
+            $(s).show();
+        }
+    },
+    deletePost: function(){
+        console.log(this.model.toJSON());
+        if(this.validUser()){
+            var gameId = this.model.get('game_id');
+            var topicId = this.model.get('topic_id');
+            this.model.destroy({
+                success: function(){
+                    $("[dismiss=deletePost]").trigger({ type: "click" });
+                    new PostsView({gid:gameId,tid:topicId});
+                }
+            });
+        }
+        else{
+            var s = "#postDeleteError" + this.model.id;
+            $(s).show();
+        }
     }
 });
 
@@ -492,23 +382,26 @@ var TopicCreateView = Backbone.View.extend({
     events: {
         'click #createTopic': 'createTopicFunction',
     },
-    render: function(){
-        return this;
-    },
     createTopicFunction: function(event){
+        var self = this;
         topics.create(this.newAttributes(),{ 
             success: function(){
-                window.location.reload();
+                new TopicsView({id: self.game_id})
+            },
+            error: function(m,response,other){
+                alert(JSON.parse(response.responseText).name.toString());
             }
         });
+        this.$('#topicname').val('');
+        this.$('#topicdesc').val('');
     },
     newAttributes: function(){
         this.topicName = this.$('#topicname');
-        this.topicDesc = this.$('#topicdesc');
+        this.editDesc = this.$('#topicdesc');
         var u = users.where({username:username})[0].toJSON();
         return{
             name: this.topicName.val(),
-            desc: this.topicDesc.val(),
+            desc: this.editDesc.val(),
             game_id: this.game_id,
             owner: u.id
         }
@@ -534,15 +427,18 @@ var PostCreateView = Backbone.View.extend({
     events: {
         'click #createPost': 'createPostFunction',
     },
-    render: function(){
-        return this;
-    },
     createPostFunction: function(event){
+        var self = this;
         posts.create(this.newAttributes(),{ 
             success: function(){
-                window.location.reload();
+                new PostsView({gid: self.game_id,tid: self.topic_id})
+            },
+            error: function(m,response,other){
+                alert(JSON.parse(response.responseText).title.toString());
             }
         });
+        this.$('#posttitle').val("");
+        this.$('#postpost').val("");
     },
     newAttributes: function(){
         this.postTitle = this.$('#posttitle');

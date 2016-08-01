@@ -222,38 +222,132 @@
         <p align="center"><%= category%></p>
         </div>
     </script>
-    
+
     <script type="text/template" id="topicitems-template">
         <td class="col-lg-8" align="center">
-            <label id="editTopicName"><a class="openPosts"><%= name %></a></label>
-            <input id="editTopicNameInput" type="text" value="<%= name%>" style="display:none;"><br>
-            <p id="topicDesc" align="center"><%= desc %></p>
-            <input id="editTopicDescInput" type="text" value="<%= desc%>" style="display:none;">
+            <label><a class="openPosts"><%= name %></a></label>
+            <p align="center"><%= desc %></p>
         </td>
         <td class="col-lg-2" style="padding:20" align="center">
-            <div id="topicEditError" class="alert alert-error" style="display:none;">Only User Who Created Can Edit this</div>
-            <img class="editTopic" style="width:30px;height:30px" src="images/edit.png">
+            <div id="editTopicModal<%= id%>" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Edit Topic</h4>
+                        </div>
+                        <div class="row modal-body">
+                            <div id="topicEditError<%=id%>" class="alert alert-error" style="display:none;">
+                            Only User Who Created Can Edit this
+                            </div>
+                            <label>Edit Name of the Topic</label>
+                            <input id="editTopicNameInput" class="form-control" type="text" value="<%= name%>">
+                            <br>
+                            <label>Edit  Description of the Topic</label>
+                            <input id="editTopicDescInput" class="form-control" type="text" value="<%= desc%>">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="Button" class="editButton btn btn-default">Edit</button>
+                            <button type="button" class="btn btn-default" dismiss='editTopic' data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button data-toggle='modal' data-target='#editTopicModal<%= id%>'>
+            <img style="width:30px;height:30px" src="images/edit.png">
+            </button>
         </td>
         <td class="col-lg-2" style="padding:20" align="center">
-            <div id="topicDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
-            <img id="deleteTopic" style="width:30px;height:30px" src="images/delete.png">
-        </td>
+            <div id="deleteTopicModal<%= id%>" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Delete Topic</h4>
+                        </div>
+                        <div class="row modal-body">
+                            <div id="topicDeleteError<%=id%>" class="alert alert-error" style="display:none;">
+                            Only User Who Created Can Delete this
+                            </div>
+                            <p align="center"><%= name %></p>
+                            <p align="center"><%= desc %></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="Button" class="deleteButton btn btn-default">Delete</button>
+                            <button type="button" class="btn btn-default" dismiss='deleteTopic' data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button data-toggle='modal' data-target='#deleteTopicModal<%= id%>'>
+            <img style="width:30px;height:30px" src="images/delete.png">
+            </button>
+        </td>    
     </script>
     
     <script type="text/template" id="postitems-template">
         <td class="col-lg-8" align="center">
-            <h2 id="title" align="center"><%= title %>:</h2>
-            <input id="editPostTitleInput" type="text" value="<%= title%>" style="display:none;">
-            <p id="editPost" align="center"><%= post %></p>
-            <input id="editPostInput" type="text" value="<%= post%>" style="display:none;">
+            <h2 align="center"><%= title %>:</h2>
+            <p align="center"><%= post %></p>
         </td>
         <td class="col-lg-2" style="padding:40" align="center">
-            <div id="postEditError" class="alert alert-error" style="display:none;">Only User Who Created Can Edit this</div>
-            <img class="editPostTitle" style="width:30px;height:30px" src="images/edit.png">
+            <div id="editPostModal<%= id%>" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Edit Post</h4>
+                        </div>
+                        <div class="row modal-body">
+                            <div id="postEditError<%=id%>" class="alert alert-error" style="display:none;">
+                            Only User Who Created, Can Edit this
+                            </div>
+                            <label>Edit Title of the Post</label>
+                            <input id="editPostTitleInput" class="form-control" type="text" value="<%= title%>">
+                            <br>
+                            <label>Edit Post</label>
+                            <input id="editPostPostInput" class="form-control" type="text" value="<%= post%>">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="Button" class="editButton btn btn-default">Edit</button>
+                            <button type="button" class="btn btn-default" dismiss='editPost' data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button data-toggle='modal' data-target='#editPostModal<%= id%>'>
+            <img style="width:30px;height:30px" src="images/edit.png">
+            </button>
         </td>
         <td class="col-lg-2" style="padding:40" align="center">
-            <div id="postDeleteError" class="alert alert-error" style="display:none;">Only User Who Created Can Delete this</div>
-            <img class="deletePost" style="width:30px;height:30px" src="images/delete.png">
+            <div id="deletePostModal<%= id%>" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Delete Post</h4>
+                        </div>
+                        <div class="row modal-body">
+                            <div id="postDeleteError<%=id%>" class="alert alert-error" style="display:none;">
+                            Only User Who Created Can Delete this
+                            </div>
+                            <p align="center"><%= title %></p>
+                            <p align="center"><%= post %></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="Button" class="deleteButton btn btn-default">Delete</button>
+                            <button type="button" class="btn btn-default" dismiss='deletePost' data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button data-toggle='modal' data-target='#deletePostModal<%= id%>'>
+            <img style="width:30px;height:30px" src="images/delete.png">
+            </button>
         </td>
     </script>
     
